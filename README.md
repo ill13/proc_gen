@@ -4,6 +4,10 @@
 These are some Python scripts for procedural generation
 
 #### procedural_generation.py 
+
+![Console Output Image of a generated map](images/maps_example.png?raw=true "Title")
+
+
 Is loosely based on Spelunky style map / map path generation for 2d platform games. Primarily its job is to guarantee that a path from [S]tart to [E]nd is viable. 
 
 It's ugly, but it's pretty well documented.
@@ -61,3 +65,5 @@ This demo add stuff for visual effect.
   ├── ─┼─ ──┤
     
   └── ─┴─ ──┘
+
+
