@@ -26,15 +26,15 @@ rooms= list(map(lambda orig_string: " " + orig_string + " ", rooms))
 
 H=6
 V=6
-level,solution_path=gen.generatePath(H,V,rooms)
+level,solution_path=gen.generatePath(H,V)
 
 for x in range(V):
     for y in range(H):
         current_room =(x,y)
         if current_room in solution_path:
-            print(Fore.GREEN + ""+level[x][y]+"",end="")
+            print(Back.GREEN + Fore.BLACK +level[x][y],end="")
         else:
-            print(Fore.RED + ""+ level[x][y]+"",end="")
+            print(Back.YELLOW + Fore.GREEN + level[x][y],end="")
         if y >=(H-1):
             print()
 

@@ -17,5 +17,6 @@ TO DOs
 - Clean up extra comments and debug stuff
 - Make it a standalone Python script [main.py]
 - More `room` types
+- Change `rooms` to a dictionary to make the process easier to understand.
 - Better corners and edges
 - Better empty room filling / level selections
