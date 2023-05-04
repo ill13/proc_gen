@@ -1,4 +1,4 @@
-import procedural_generation as gen
+import procedural_generation
 import random
 
 from colorama import init
@@ -28,9 +28,9 @@ rooms= list(map(lambda orig_string: " " + orig_string + " ", rooms))
 H=6
 V=6
 
-seed=random.random()
+seed= 5 # random.random()
 
-level,solution_path=gen.generatePath(H,V,seed=seed)
+level,solution_path=procedural_generation.generatePath(H,V,seed=seed)
 
 for x in range(V):
     for y in range(H):
