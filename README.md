@@ -3,7 +3,7 @@
 
 These are some Python scripts for procedural generation
 
-#### `gen.py` 
+#### procedural_generation.py 
 Is loosely based on Spelunky style map / map path generation for 2d platform games. Primarily its job is to guarantee that a path from [S]tart to [E]nd is viable. 
 
 It's ugly, but it's pretty well documented.
