@@ -37,3 +37,18 @@ TO DOs
 - Change `rooms` to a dictionary to make the process easier to understand.
 - Better corners and edges
 - Better empty room filling / level selections
+
+
+
+
+
+Map parts:
+  ┌── ─┬─ ──┐
+  
+  │    │    │
+  
+  ├── ─┼─ ──┤
+  
+  │    │    │
+  
+  └── ─┴─ ──┘
