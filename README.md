@@ -42,7 +42,9 @@ TO DOs
 
 
 
-Map parts:
+#### Map components:
+
+
 
   ┌── ─┬─ ──┐
   
