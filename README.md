@@ -12,11 +12,20 @@ You feed it the [H]orizontal and [V]ertical size of the level you'd like to desi
 
 It also spits out an array with the coordinates of the current path. This array is useful for ensuring that important items are guaranteed to be accessible to players. You wouldn't want the *Big Key, Final Boss, Rare Item* to spawn outside of that array -otherwise the players may never solve or complete the level.
 
-The `procedural_generation.py` script itself has no requirements, however `test.py` will need [Colorama](https://pypi.org/project/colorama/) installed to make the test file look pretty
+The `procedural_generation.py` script itself has no requirements, however `adv_test.py` will need [Colorama](https://pypi.org/project/colorama/) installed to make the test file look pretty
 
 All you need to do is import the script and run: 
 
-`level,solution_path=gen.generatePath()`
+```python
+
+import procedural_generation
+
+level,solution_path=procedural_generation.generatePath()
+
+print(level)
+print(solution_path)
+
+```
 
 
 
