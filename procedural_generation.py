@@ -1,28 +1,42 @@
 import random
 from random import choice
 
-from colorama import init
-from colorama import Fore, Back, Style
-init(autoreset=True)
 
-def generatePath(H,V,rooms):
+
+rooms=[
+    " - ", # 0
+    " S ", # 1
+    " E ", # 2
+    "───", # 3
+    "─┬─", # 4
+    "─┴─", # 5
+    "─┼─", # 6
+    " ─", # 7
+    "─ ", # 8
+    "─┐ ", # 9
+    " ┌─", # 10
+    " └─", # 11
+    "─┘ ", # 12
+        ]
+
+
+def generatePath(H=4,V=4,rooms=rooms):
     V_ROOM_COUNT=V
     H_ROOM_COUNT=H
 
-    #clear the map 
+    #clear / instantiate the map 
     map = []
 
     # make an array to store the path points for special items. 
     # A big key needs to spawn in this path
-    path = []
+    solution_path = []
     
     # initialize / fill the map array with 0's
     for y in range(V_ROOM_COUNT):
         map.append([])
         for x in range(H_ROOM_COUNT):
-            rand=0#random.randint(7,10)
-            map[y].append(rooms[rand])
-            #map[y].append(MapData.fill)
+            map[y].append(rooms[0])
+
 
     posX = 0
     posY = 0
@@ -30,9 +44,11 @@ def generatePath(H,V,rooms):
     # select a random position in the first row
     startPosition = random.randint(0,H_ROOM_COUNT-1)
     # mark it with an S
+    # Mark it with the first item in your rooms array
     #map[0][startPosition] = MapData.mapStart # "S"
-    map[0][startPosition] = "─S─" # rooms[5]
-    path.append((0,startPosition))
+
+    map[0][startPosition] = rooms[1]
+    solution_path.append((0,startPosition))
 
     # set our current x-position to the startPosition 
     posX = startPosition
@@ -67,8 +83,8 @@ def generatePath(H,V,rooms):
                 posX -= 1
 
             # setting the next room to a 1 (left-right room)
-            map[posY][posX] =  rooms[1]
-            path.append((posY,posX))
+            map[posY][posX] =  rooms[3]
+            solution_path.append((posY,posX))
 
             # after one Move per row you could go down a layer
             movedOnce = True
@@ -79,32 +95,32 @@ def generatePath(H,V,rooms):
             # if you are in one of the corners you must go down
             if posX == 0 or posX == H_ROOM_COUNT - 1:
                 # changing the current room into a 2 (left-right-bottom room)
-                map[posY][posX] =rooms[2]
-                path.append((posY,posX))
+                map[posY][posX] =rooms[7]
+                solution_path.append((posY,posX))
                 # then set to a 'top corner piece'
                 # However, if the piece above this potential corner piece is already a top corner piece
                 # then this piece needs to be a three way T(LR)B  
                 if posX==0:
-                    map[posY][posX] =rooms[8]
+                    map[posY][posX] =rooms[10]
                 if posX == H_ROOM_COUNT - 1:
-                    map[posY][posX] =rooms[7]
+                    map[posY][posX] =rooms[9]
                       
                 # go down a row
-                path.append((posY,posX))
+                solution_path.append((posY,posX))
                 posY += 1
 
                 # the next room below the current room must be a 3 (left-right-top room)
-                map[posY][posX] = rooms[3]
+                map[posY][posX] = rooms[5]
                 # OR a 'bottom corner piece'
                 if posX==0:
-                    map[posY][posX] =rooms[9]
+                    map[posY][posX] =rooms[11]
                 if posX == H_ROOM_COUNT - 1:
-                    map[posY][posX] =rooms[10]  
+                    map[posY][posX] =rooms[12]  
             
                 
 
                 # making sure you have to do at least one move per row
-                path.append((posY,posX))
+                solution_path.append((posY,posX))
                 movedOnce = False
 
 
@@ -120,8 +136,8 @@ def generatePath(H,V,rooms):
                         # move to the left side
                         posX -= 1
                         # setting the next room to a 1 (left-right room)
-                        map[posY][posX] =  rooms[1]
-                        path.append((posY,posX))
+                        map[posY][posX] =  rooms[3]
+                        solution_path.append((posY,posX))
                         # At this point we should loop / call a function to add room items?
 
                     # else the room to the right must be free
@@ -129,25 +145,25 @@ def generatePath(H,V,rooms):
                         # move to the right side
                         posX += 1
                         # setting the next room to a 1 (left-right room)
-                        map[posY][posX] =  rooms[1]
-                        path.append((posY,posX))
+                        map[posY][posX] =  rooms[3]
+                        solution_path.append((posY,posX))
                         # At this point we should loop / call a function to add room items?
                 
                 # move down
                 else:
                     # changing the current room into a 2 (left-right-bottom room)
-                    map[posY][posX] = rooms[2]
+                    map[posY][posX] = rooms[4]
 
 
                     # go down a row
-                    path.append((posY,posX))
+                    solution_path.append((posY,posX))
                     posY += 1
 
                     # the next room below the current room must be a 3 (left-right-top room)
-                    map[posY][posX] = rooms[3]
+                    map[posY][posX] = rooms[5]
 
                     # making sure you have to do at least one move per row
-                    path.append((posY,posX))
+                    solution_path.append((posY,posX))
                     movedOnce = False
 
 
@@ -169,94 +185,61 @@ def generatePath(H,V,rooms):
                     case 1:
                         posX -= 1
                         # setting the next room to a 1 (left-right room)
-                        # need to check if room was already set to 3
-                        if map[posY][posX] == rooms[3]:
-                            map[posY][posX] = rooms[3]
+                        # need to check if room was already set to 3 ?
+                        if map[posY][posX] == rooms[5]:
+                            map[posY][posX] = rooms[5]
                         else:
-                            map[posY][posX] = rooms[1]
-                        path.append((posY,posX))
+                            map[posY][posX] = rooms[3]
+                        solution_path.append((posY,posX))
                     case 2:
                         posX += 1
                         # setting the next room to a 1 (left-right room)
-                        #map[posY][posX] = MapData.mapLRT # rooms[1]
-                        if map[posY][posX] == rooms[3]:
-                            map[posY][posX] = rooms[3]
+                        if map[posY][posX] == rooms[5]:
+                            map[posY][posX] = rooms[5]
                         else:
-                            map[posY][posX] = rooms[1]
-                        path.append((posY,posX))
+                            map[posY][posX] = rooms[3]
+                        solution_path.append((posY,posX))
                     case 3:
-                        #map[posY][posX] = MapData.mapEnd # "E"
-                        map[posY][posX] = "─E─" #rooms[6]
+                        map[posY][posX] = rooms[2] # End
                         #end the loop
-                        path.append((posY,posX))
+                        solution_path.append((posY,posX))
                         finished = True
                             
             # if you are not in one of the corners place the exit
             else:
-                #map[posY][posX] =  MapData.mapEnd # "E"
-                map[posY][posX] =   "─E─" #rooms[6]
+                map[posY][posX] = rooms[2] # End
 
                 #end the loop
-                path.append((posY,posX))
+                solution_path.append((posY,posX))
                 finished = True
 
 
-    # print the map out 
-    # for d in range(V_ROOM_COUNT):
-    #     print(map[d])
+    # Remove duplicates from path
+    solution_path=(list(dict.fromkeys(solution_path)))
 
-    # Remove duplicates
-    path=(list(dict.fromkeys(path)))
+    return map,solution_path
 
-    return map,path
-
-
-H=4
-V=4
-
-rooms=[
-    " - ", # 0
-    "───", # 1
-    "─┬─", # 2
-    "─┴─", # 3
-    "─┼─", #  4
-    " ─", # 5
-    "─ ", # 6
-    "─┐ ", # 7
-    " ┌─", # 8
-    " └─", # 9
-    "─┘ ", # 10
-        ]
-
-
-level,path=generatePath(H,V,rooms)
-
-
-
-
-for x in range(V):
-    for y in range(H):
-        temp =(x,y)
-        if temp in path:
-            print(Fore.GREEN + level[x][y],end="")
-        else:
-            # exclude_this = [5,6,7,8,9]
-            # exclude_this = [0]
-            # my_random_int = choice(list(set(range(1, 10)) - set(exclude_this)))
-            # level[x][y]=rooms[my_random_int]
-            print(Fore.RED + level[x][y],end="")
-        if y >=(H-1):
-            print()
-    
-print(path)
-
-
-
-    
 
 if __name__ == "__main__":
-    print("Autogenerate a 4x4 level map and path...\n")
-    level,path=generatePath(H,V,rooms)
+    
+    print("\nAutogenerate a 4x4 level map and show the solution_path...\n")
+    H=4
+    V=4
+    level,solution_path=generatePath(H,V,rooms)
+
+    for x in range(V):
+        for y in range(H):
+            current_room =(x,y)
+            if current_room in solution_path:
+                print(""+level[x][y]+"" ,end="")
+            else:
+                print(""+ level[x][y]+"",end="")
+            if y >=(H-1):
+                print()
+
+    print(f"\nStart to End: {solution_path}\n")
+
+
 
 
 
