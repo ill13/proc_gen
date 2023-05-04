@@ -32,13 +32,10 @@ print(solution_path)
 ```
 #### Godot
 
-Originally this was written for use in Godot 3.5.x
+- Originally this was written for use in Godot 3.5.x
+- To convert back, you might have to re-init some variables and change how *random* is implemented
+- Instead of using 12 or more room types, just using the base ~5 room types and drawing a border on the outside edges could save some time / effort.
 
-To convert back, you might have to re-init some variables and change how *random* is implemented
-
-Instead of using 12 or more room types, just using the base ~5 room types and drawing a border on the outside edges could save some time / effort.
-
-This demo add stuff for visual effect.
 
 
 #### TO DOs
