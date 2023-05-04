@@ -22,7 +22,10 @@ rooms=[
         ]
 
 
-def generatePath(H=4,V=4,rooms=rooms):
+def generatePath(H=4,V=4,rooms=rooms,seed=10):
+
+    random.seed(seed)
+    
     V_ROOM_COUNT=V
     H_ROOM_COUNT=H
 
@@ -224,10 +227,11 @@ def generatePath(H=4,V=4,rooms=rooms):
 
 if __name__ == "__main__":
     
-    print("\nAutogenerate a 4x4 level map and show the solution_path...\n")
+    print("\nAutogenerate a 4x4 level map and show the solution_path...")
+    print("Using a random seed\n")
     H=4
     V=4
-    level,solution_path=generatePath(H,V,rooms)
+    level,solution_path=generatePath(H,V,rooms,seed=random.random() )
 
     for x in range(V):
         for y in range(H):
@@ -240,49 +244,3 @@ if __name__ == "__main__":
                 print()
 
     print(f"\nStart to End: {solution_path}\n")
-
-
-
-
-
-'''
-if not in path
-    if is edge the 
-
-'''
-
-
-
-
-
-
-
-
-
-
-
-   #print(Fore.GREEN + level[x][0] + level[x][1] + level[x][2] + level[x][3]) 
-
-# print the map out 
-
-# for h in range(V):
-#     print(f'{level[h]}')
-
-# print(level[0][0])   
-
-
-
-# for y in range(V):
-#    # print("\n")
-#     row=[]
-#     for x in range(H):
-#         row.append(level[y][x])
-#         #print(level[y][x])
-#     print(row)
-
-# print(level[0][0] + level[0][1] + level[0][2] + level[0][3])
-# print(level[1][0] + level[1][1] + level[1][2] + level[1][3])
-# print(level[2][0] + level[2][1] + level[2][2] + level[2][3])
-# print(level[3][0] + level[3][1] + level[3][2] + level[3][3])
-
-
