@@ -33,7 +33,12 @@ print(solution_path)
 #### Godot
 
 - Originally this was written for use in Godot 3.5.x
-- To convert back, you might have to re-init some variables and change how *random* is implemented
+- To convert back to Godot: you might have to 
+  - re-init some variables 
+  - change `random` to `random.randint`
+  - rename `func` to `def`
+  - Where `match` is used, remove `case`
+  - `for y in range(V_ROOM_COUNT)` change to `for y in V_ROOM_COUNT`
 - Instead of using 12 or more room types, just using the base ~5 room types and drawing a border on the outside edges could save some time / effort.
 
 
@@ -41,10 +46,10 @@ print(solution_path)
 #### TO DOs
 
 - Clean up extra comments and debug stuff
-- Make it a standalone Python script [main.py]
-- Implement more `room` types
+- ~~Make it a standalone Python script [main.py]~~
+- ~~Implement more `room` types~~
   - 
-- Change `rooms` to a dictionary to make the process easier to understand.
+- ~~Change `rooms` to a dictionary to make the process easier to understand.~~
 - Better corners and edges
 - Better empty room filling / level selections
 - Make the path be able to go back up for map generations like 32x2?

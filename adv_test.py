@@ -25,8 +25,8 @@ rooms=[
 # Adding some text padding for presentation
 rooms= list(map(lambda orig_string: " " + orig_string + " ", rooms))
 
-H=32
-V=2
+H=6
+V=6
 
 seed= random.random()
 
