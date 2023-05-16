@@ -27,7 +27,6 @@ rooms= list(map(lambda orig_string: " " + orig_string + " ", rooms))
 
 H=6
 V=6
-
 seed= random.random()
 
 level,solution_path=procedural_generation.generatePath(H,V,seed=seed)

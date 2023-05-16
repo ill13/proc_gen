@@ -23,7 +23,7 @@ rooms=[
 
 
 rooms={
-    "Empty":"000",
+    "Empty":"UDF",
     "Start":"─S─",
     "End":"─E─",
     "LR":"───",
@@ -66,8 +66,8 @@ def generatePath(H=4,V=4,rooms=rooms,seed=10):
     posY = 0
 
     # select a random position in the first row
-    startPosition = random.randint(0,H_ROOM_COUNT-1)
-    # mark it with an S
+    # but not on either edge ?
+    startPosition = random.randint(1,H_ROOM_COUNT-3)
     map[0][startPosition] = rooms["Start"]
     solution_path.append((0,startPosition))
 
@@ -78,12 +78,11 @@ def generatePath(H=4,V=4,rooms=rooms,seed=10):
     nextRoom = 0 # 1 left, 2 right, 3 bottom
     # Implementing at least one move per row, to make generation more interesting and preventing long drops
     movedOnce = False
-    #movedOnce = True
     # variable to stop the while loop
     finished  = False
 
     while not finished:
-        # very small delay between every iteration to prevent a crash
+        # very small delay between every iteration to prevent a crash in Godot
         #yield(get_tree().create_timer(timer_val), "timeout")
 
         # first move in every row
@@ -99,13 +98,12 @@ def generatePath(H=4,V=4,rooms=rooms,seed=10):
                         posX += 1
 
             # if you are in one of the corners, there is only one move you can do
-            
             elif posX == 0:
                 posX += 1
             elif posX == H_ROOM_COUNT -1:
                 posX -= 1
 
-            # setting the next room to a 1 (left-right room)
+            # setting the next room (left-right room)
             map[posY][posX] =  rooms["LR"]
             solution_path.append((posY,posX))
 
@@ -149,7 +147,6 @@ def generatePath(H=4,V=4,rooms=rooms,seed=10):
             else:
                 # to the side (1) or down (2)
                 nextRoom = random.randint(1,2)
-                
                 # move sideways
                 if nextRoom == 1:
                     # check if the room left to the current position is free
@@ -174,17 +171,14 @@ def generatePath(H=4,V=4,rooms=rooms,seed=10):
                 else:
                     # changing the current room into a 2 (left-right-bottom room)
                     map[posY][posX] = rooms["LRB"]
-
-
                     # go down a row
                     solution_path.append((posY,posX))
                     posY += 1
-
-                    # the next room below the current room must be a 3 (left-top-right room)
+                    # the next room below the current room must be an LTR or a LTRB
                     map[posY][posX] = rooms["LTR"]
 
-                    # making sure you have to do at least one move per row
                     solution_path.append((posY,posX))
+                    # making sure you have to do at least one move per row
                     movedOnce = False
 
 
@@ -251,10 +245,8 @@ def generatePath(H=4,V=4,rooms=rooms,seed=10):
 
 
 def placeExtraRooms(H=4,V=4,rooms=rooms,map=map,seed=10):
-    # looping tough the 2D Array
 
-    random.seed(seed)
-    
+    random.seed(seed) 
     V_ROOM_COUNT=V
     H_ROOM_COUNT=H
 
@@ -265,10 +257,11 @@ def placeExtraRooms(H=4,V=4,rooms=rooms,map=map,seed=10):
 
             #if the current room is "Empty" it could be replaced
             if map[y][x] == rooms["Empty"]:
-                #map[y][x] = rooms["LR"]
+                
+                #map[y][x] = rooms["LRB"]
                 # choose a random number between 1 and 10 (change the 3, to change the probabilities; currently 1/3)
-                fillRooms = random.randint(1,3)
-                print(f" x={x} y={y} case={fillRooms}")
+                fillRooms = random.randint(1,4)
+                #print(f" x={x} y={y} case={fillRooms}")
                 match fillRooms:
                     # just place a left right room 
                     case 1:
@@ -280,10 +273,10 @@ def placeExtraRooms(H=4,V=4,rooms=rooms,map=map,seed=10):
                             map[y][x] = rooms["LCave"]
                         # check if you are not in the bottom row
                         if y < V_ROOM_COUNT - 1:
-                            # if not in bottom row check if the room below the current position is already a left right bottom room
-                            if map[y+1][x] == rooms["LRB"]:
-                                # if the room below is already a 2, change it to a 4 (left-right-bottom-top room)
-                                map[y+1][x] = rooms["LTRB"] 
+                            # if not in bottom row check if the room below the current position is already an LR
+                            if map[y+1][x] == rooms["LR"]:
+                                # if the room below is already an LRB , change it to a LTR
+                                map[y+1][x] == rooms["LTR"]
                                 # Now set the current room to a LRB
                                 map[y][x] = rooms["LRB"] 
                         else:
@@ -306,30 +299,43 @@ def placeExtraRooms(H=4,V=4,rooms=rooms,map=map,seed=10):
                                 map[y][x] = rooms["LTR"] 
                         else:
                             # if you are in the top row, just place an LR
-                            map[y][x] = rooms["LR"]
+                            tmp = random.randint(1,3)
+                            match tmp:
+                                case 1:
+                                    map[y][x] = rooms["LR"]
+                                case 2:
+                                    map[y][x] = rooms["LRB"]
+                    case 4:
+                        pass
+                        map[y][x] = rooms["LRB"]
 
-            # Finally, if a room is on either edge and is a LR
+
+
+            # If a room is on either edge and is a LR
             # Then change it to a Cave
             # Shouldn't need to verify this against the solution path
+
             if x == 0:
                 #if map[y][x] == rooms["LR"]:
                 if not map[y][x] == rooms["End"]:
-                    if map[y][x] == rooms["LR"]:
+                    if map[y][x] == rooms["LR"] or  map[y][x] == rooms["LRB"] or  map[y][x] == rooms["Empty"] :
                         map[y][x] = rooms["LCave"]
             if x == H_ROOM_COUNT - 1:
                 if not map[y][x] == rooms["End"]:
-                    if map[y][x] == rooms["LR"]:
+                    if map[y][x] == rooms["LR"] or  map[y][x] == rooms["LRB"] or  map[y][x] == rooms["Empty"] :
                         map[y][x] = rooms["RCave"]
             #     
     return map
 
 
 if __name__ == "__main__":
+
+    H=8
+    V=8
     
-    print("\nAutogenerate a 4x4 level map and show the solution_path...")
+    print(f"\nAutogenerate a {H}x{V} level map and show the solution_path...")
     print("Using a random seed\n")
-    H=4
-    V=4
+    
     level,solution_path=generatePath(H,V,rooms,seed=random.random() )
 
     for x in range(V):
